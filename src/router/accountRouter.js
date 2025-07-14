@@ -12,12 +12,12 @@ const router= express.Router()
 router.get("/get-amount",async(req,res)=>{
    
    try {
-     const amount = await Account.findOne({
+     const balance = await Account.findOne({
          userId:req.userId
      })
      
 
-     if(!amount){
+     if(!balance){
         return res.json({
             success:false,
             msg:"try again"
@@ -26,7 +26,7 @@ router.get("/get-amount",async(req,res)=>{
 
     res.json({
         success:true,
-        amount:amount.balance,
+        amount:balance.amount,
     })
      
    } catch (error) {

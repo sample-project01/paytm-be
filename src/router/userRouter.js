@@ -87,6 +87,7 @@ const signinSchema= z.object({
 })
 router.post("/signin",async(req,res)=>{
     req.body.userName= req.body.email
+    console.log(req.body)
     
     const{success}= signinSchema.safeParse(req.body)
     if(!success){
@@ -95,13 +96,14 @@ router.post("/signin",async(req,res)=>{
             msg:"invalid credentials"
         })
     }
-    const checkUser= await User.findOne({
+    let checkUser= await User.findOne({
         userName:req.body.userName
     })
-    if(!checkUser._id){
+    console.log(checkUser)
+    if(!checkUser?._id){
         return res.json({
             success:false,
-            msg:"pls sign in first"
+            msg:"pls sign up first"
         })
     }
     const hashedPass= await bcrypt.compare(req.body.password,checkUser.password)
@@ -113,13 +115,16 @@ router.post("/signin",async(req,res)=>{
         })
 
     }
-    const token = jwt.sign({
+    let payload= {
         userId:checkUser._id
-    },process.env.JWT_SECRET)
+    }
+    const token = jwt.sign(payload,process.env.JWT_SECRET)
+    checkUser.password= null
 
     res.cookie("PayTM",token).json({
         success:true,
-        msg:"user logged in"
+        msg:"user logged in",
+        payload:checkUser
     })
 
 })
