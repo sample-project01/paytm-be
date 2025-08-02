@@ -17,6 +17,8 @@ app.use(cors({
 
 app.use("/api/v1",router)
 
+
+
 app.get("/",middleware,(req,res)=>{
     res.send("welcome to dashboard")
 })
