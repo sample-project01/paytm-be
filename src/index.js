@@ -22,6 +22,9 @@ app.use("/api/v1",router)
 app.get("/",middleware,(req,res)=>{
     res.send("welcome to dashboard")
 })
+app.get("/home",(req,res)=>{
+    res.send("app is running")
+})
 
 
 
